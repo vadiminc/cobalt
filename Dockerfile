@@ -23,4 +23,5 @@ COPY --from=build --chown=node:node /app/.git /app/.git
 USER node
 
 EXPOSE 9000
-CMD [ "node", "src/cobalt" ]
+# CMD [ "node", "src/cobalt" ]
+CMD sh -c 'echo "$ALL_COOKIES" > /app/cookies.json && node src/cobalt'
