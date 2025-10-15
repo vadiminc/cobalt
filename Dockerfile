@@ -6,7 +6,7 @@ FROM base AS build
 WORKDIR /app
 COPY . /app
 
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@latest --activate
 RUN apk add --no-cache python3 alpine-sdk
 
 RUN pnpm install --prod --frozen-lockfile
