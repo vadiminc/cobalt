@@ -18,6 +18,20 @@ WORKDIR /app
 
 COPY --from=build --chown=node:node /prod/api /app
 
+# Install git and create minimal git repo for version-info package
+RUN apk add --no-cache git && \
+    cd /app && \
+    git init && \
+    git config user.email "docker@cobalt" && \
+    git config user.name "Docker Build" && \
+    git remote add origin https://github.com/imputnet/cobalt.git && \
+    git add -A && \
+    git commit -m "docker build" || true && \
+    chown -R node:node /app/.git
+
+# Create cookies.json with proper permissions
+RUN touch /app/cookies.json && chown node:node /app/cookies.json
+
 USER node
 
 EXPOSE 9000
