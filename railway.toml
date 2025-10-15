@@ -1,0 +1,9 @@
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+startCommand = "sh -c 'echo \"$ALL_COOKIES\" > /app/cookies.json && node src/cobalt'"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10
+
