@@ -1,0 +1,4 @@
+api/package.json
+web/package.json
+packages/*/package.json
+
