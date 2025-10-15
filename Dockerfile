@@ -16,6 +16,9 @@ RUN pnpm deploy --filter=@imput/cobalt-api --prod /prod/api
 FROM base AS api
 WORKDIR /app
 
+# Enable corepack for pnpm (Railway might need it)
+RUN corepack enable
+
 COPY --from=build --chown=node:node /prod/api /app
 
 # Install git and create minimal git repo for version-info package
