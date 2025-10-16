@@ -111,6 +111,12 @@ export function getCookie(service) {
         return;
     }
 
+    console.log(`[Cookie Debug] Getting cookie for ${service}:`, {
+        hasCookies: !!cookies[service],
+        cookieCount: cookies[service]?.length || 0,
+        allServices: Object.keys(cookies)
+    });
+
     if (!cookies[service] || !cookies[service].length) return;
 
     const idx = Math.floor(Math.random() * cookies[service].length);
@@ -121,6 +127,13 @@ export function getCookie(service) {
     }
 
     cookies[service][idx].meta = { service, idx };
+    
+    console.log(`[Cookie Debug] Selected cookie #${idx}:`, {
+        isString: typeof cookie === 'string',
+        cookiePreview: typeof cookie === 'string' ? cookie.substring(0, 80) : 'Cookie object',
+        keys: cookies[service][idx].values ? Object.keys(cookies[service][idx].values) : []
+    });
+    
     return cookies[service][idx];
 }
 

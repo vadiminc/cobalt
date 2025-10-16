@@ -52,6 +52,15 @@ const cloneInnertube = async (customFetch, useSession) => {
     const rawCookie = getCookie('youtube');
     const cookie = rawCookie?.toString();
 
+    // Debug: log cookie info
+    console.log('[YouTube Debug] Cookie loaded:', {
+        hasCookie: !!rawCookie,
+        cookieLength: cookie?.length || 0,
+        cookiePreview: cookie ? cookie.substring(0, 100) + '...' : 'none',
+        cookieKeys: rawCookie ? Object.keys(rawCookie.values?.() || rawCookie._values || {}) : [],
+        cookieType: rawCookie ? rawCookie.constructor.name : 'none'
+    });
+
     const sessionTokens = getYouTubeSession();
     const retrieve_player = Boolean(sessionTokens || cookie);
 
@@ -252,6 +261,11 @@ export default async function (o) {
 
     switch (playability.status) {
         case "LOGIN_REQUIRED":
+            console.log('[YouTube Debug] LOGIN_REQUIRED error:', {
+                reason: playability.reason,
+                errorScreen: playability.error_screen,
+                subreason: playability.error_screen?.subreason?.text
+            });
             if (playability.reason.endsWith("bot")) {
                 return { error: "youtube.login" }
             }
