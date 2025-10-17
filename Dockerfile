@@ -21,6 +21,9 @@ RUN corepack enable
 
 COPY --from=build --chown=node:node /prod/api /app
 
+# Copy cookies.json from build context
+COPY --chown=node:node api/cookies.json /app/cookies.json
+
 # Install git and create minimal git repo for version-info package
 RUN apk add --no-cache git && \
     cd /app && \
