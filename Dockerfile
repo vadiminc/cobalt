@@ -32,11 +32,7 @@ RUN apk add --no-cache git && \
     git commit -m "docker build" || true && \
     chown -R node:node /app/.git
 
-# Create cookies.json with proper permissions
-RUN touch /app/cookies.json && chown node:node /app/cookies.json
-
 USER node
 
 EXPOSE 9000
-# CMD [ "node", "src/cobalt" ]
-CMD sh -c 'echo "$ALL_COOKIES" > /app/cookies.json && node src/cobalt'
+CMD [ "node", "src/cobalt" ]
