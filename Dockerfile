@@ -6,9 +6,10 @@ FROM base AS build
 WORKDIR /app
 COPY . /app
 
-RUN npm install -g pnpm@9.6.0
 RUN apk add --no-cache python3 alpine-sdk
+RUN corepack enable
 
+# pnpm will be auto-installed from package.json on first use
 RUN pnpm install --prod --frozen-lockfile
 
 RUN pnpm deploy --filter=@imput/cobalt-api --prod /prod/api
