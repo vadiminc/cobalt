@@ -6,7 +6,7 @@ FROM base AS build
 WORKDIR /app
 COPY . /app
 
-RUN corepack enable && corepack prepare pnpm@9.6.0 --activate
+RUN npm install -g pnpm@9.6.0
 RUN apk add --no-cache python3 alpine-sdk
 
 RUN pnpm install --prod --frozen-lockfile
@@ -15,9 +15,6 @@ RUN pnpm deploy --filter=@imput/cobalt-api --prod /prod/api
 
 FROM base AS api
 WORKDIR /app
-
-# Enable corepack for pnpm (Railway might need it)
-RUN corepack enable
 
 COPY --from=build --chown=node:node /prod/api /app
 
