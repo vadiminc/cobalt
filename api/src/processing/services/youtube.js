@@ -51,6 +51,9 @@ const cloneInnertube = async (customFetch, useSession) => {
 
     const rawCookie = getCookie('youtube');
     const cookie = rawCookie?.toString();
+    
+    const sessionTokens = getYouTubeSession();
+    const retrieve_player = Boolean(sessionTokens || cookie);
 
     // Debug: log cookie info
     console.log('[YouTube Debug] Cookie loaded:', {
@@ -60,9 +63,15 @@ const cloneInnertube = async (customFetch, useSession) => {
         cookieKeys: rawCookie ? Object.keys(rawCookie.values?.() || rawCookie._values || {}) : [],
         cookieType: rawCookie ? rawCookie.constructor.name : 'none'
     });
-
-    const sessionTokens = getYouTubeSession();
-    const retrieve_player = Boolean(sessionTokens || cookie);
+    
+    // Debug: log if session tokens are available
+    console.log('[YouTube Debug] Session info:', {
+        hasSessionTokens: !!sessionTokens,
+        hasPoToken: !!sessionTokens?.potoken,
+        hasVisitorData: !!sessionTokens?.visitor_data,
+        ytSessionServer: env.ytSessionServer || 'not configured',
+        retrieve_player: retrieve_player
+    });
 
     if (useSession && env.ytSessionServer && !sessionTokens?.potoken) {
         throw "no_session_tokens";
